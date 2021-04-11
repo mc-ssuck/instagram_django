@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-center mx-5">
+      <a href="{% url 'accounts:profile' user_info.pk %}"><img src="{{ user_info.profile_image.url }}" class="d-inline" width="160px" style="clip-path: circle(80px at center)"></a>
+    </div>
+    <div>
+      <div class="d-inline">
+        <h1 class="mx-auto mt-3">{{ user_info }}</h1>
+      </div>
+      <div class="d-inline">
+        {% if user != user_info %}
+          {% if user in user_info.followers.all %}
+            <h4><a class="text-decoration-none text-dark mx-auto" href="{% url 'accounts:follow' user_info.pk %}">언팔로우</a></h4>
+          {% else %}
+            <h4><a class="text-decoration-none text-dark mx-auto" href="{% url 'accounts:follow' user_info.pk %}">팔로우</a></h4>
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="d-inline">
+        <h5>following {{ user_info.followings.count }}</h5>
+      </div>
+      <div class="d-inline">
+        <h5>follower {{ user_info.followers.count }}</h5>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for post in user_info.post_set.all %}
+      <div class="col">
+        {% include 'posts/_card.html' %}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock content %}

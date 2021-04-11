@@ -1,0 +1,45 @@
+{% load static %}
+{% load my_filters %}
+{% load bootstrap5 %}
+<div class="card">
+  <div class="d-flex align-items-center justify-content-start mx-2 mt-2">
+    <a href="{% url 'accounts:profile' post.user.pk %}"><img src="{{ post.user.profile_image.url }}" class="d-inline" width="40px" style="clip-path: circle(20px at center)"></a>
+    <h4 class="d-inline mx-2 my-2">{{ post.user }}</h4>
+  </div>
+  <hr>
+  {% if post.image %}
+    <img src="{{ post.image.url }}" class="card-img-top p-3" alt="{{ post.image }}" width="500px">
+  {% else %}
+    <img src="/media/lion.jpg" class="card-img-top" alt="">
+  {% endif %}
+  {% if request.user in post.like_users.all %}
+    <a class="text-decoration-none" href="{% url 'posts:like' post.pk %}"><h3 class="mx-3"> 💖</h3></a>
+  {% else %}
+    <a class="text-decoration-none" href="{% url 'posts:like' post.pk %}"><h2 class="mx-3"> ❤</h2></a>
+  {% endif %}
+  <hr>
+  <div class="card-body">
+    <h3 class="card-title">
+      <a class="text-decoration-none text-dark" href="{% url 'posts:detail' post.pk %}">😊Title: {{ post.title }}</a> 
+    </h3>
+    <p class="card-text">{{ post|hashtag_link|safe }}</p>
+  </div>
+  <hr>
+  {% for comment in post.comment_set.all %}
+    {% if forloop.counter <= 3 %}
+      <h5 class="mx-3">{{ comment.user }}: {{ comment.content }}</h5>
+    {% endif %}
+  {% endfor %}
+  <hr>
+  <form class="d-flex align-items-center justify-content-between" action="{% url 'posts:comment_create' post.pk %}" method="POST">
+    {% csrf_token %}
+    <div class="d-inline">
+      <img src="{% static '스마일.png' %}" width="65px">
+      {{ form.content }}
+    </div>
+    <div class="d-inline mb-2">
+      <input type="submit" class="btn text-primary ms-auto" value="게시">
+    </div>
+  </form>
+</div>
+

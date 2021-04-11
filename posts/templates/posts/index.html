@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-8 row row-cols-1 row-cols-md-1 g-4">
+      {% for post in posts %}
+        <div class="col">
+          {% include 'posts/_card.html' %}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="col-4 g-5 text-center">
+      <div class="d-flex align-items-center justify-content-center">
+        <a href="{% url 'accounts:profile' user.pk %}"><img src="{{ user.profile_image.url }}" class="d-inline" width="80px" style="clip-path: circle(40px at center)"></a>
+        <h2 class="d-inline mx-2 my-2">{{ user }}</h2>
+      </div>
+      <hr>
+      <h4>나의 팔로워 리스트</h4>
+      <div>
+        {% for follower in user.followers.all %}
+          <div class="d-flex align-items-center justify-content-center">
+            <a href="{% url 'accounts:profile' follower.pk %}"><img src="{{ follower.profile_image.url }}" class="d-inline" width="40px" style="clip-path: circle(20px at center)"></a>
+            <h2 class="d-inline mx-2 my-2">{{ follower }}</h2>
+          </div>
+        {% endfor %}
+      </div>
+
+    
+    </div>
+  </div>
+{% endblock content %}

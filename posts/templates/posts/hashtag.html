@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ tag.content }}</h1>
+  {% comment %} {% for post in tag.posts.all %}
+    {% include 'posts/_card.html' %}
+  {% endfor %} {% endcomment %}
+
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for post in tag.posts.all %}
+      <div class="col">
+        {% include 'posts/_card.html' %}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock content %}
+
